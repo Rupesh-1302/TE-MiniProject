@@ -5,7 +5,7 @@ import axios from "axios";
 function App() {
   async function TestConnection() {
     const res = await axios.get("http://localhost:8000/home");
-    console.log(res);
+    console.log(res.data);
   }
   useEffect(() => {
     TestConnection();
