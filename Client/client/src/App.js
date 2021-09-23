@@ -1,28 +1,34 @@
 import "./App.css";
-import React, { useState, useEffect } from "react";
-import Navbar from "./Components/Navbar";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import axios from "axios";
+import React, { useState } from "react";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from "react-router-dom";
+import Login from "./Components/Login";
+import User from "./Components/User";
 
 function App() {
-  const [data, setData] = useState("");
-  async function TestConnection() {
-    const res = await axios.get("http://localhost:8000/home");
-    setData(res.data);
+  const [login, setLogin] = useState(false);
+  function verifiedUser(verification) {
+    setLogin(verification);
   }
-  useEffect(() => {
-    TestConnection();
-  }, []);
   return (
     <div className="App">
       <Router>
-        <Navbar />
         <Switch>
-          <Route path="/home">
-            <h1>{data}</h1>
+          <Route path="/" exact>
+            <Redirect to="/user" />
           </Route>
-          <Route path="/link">
-            <h1>This is link page</h1>
+          <Route path="/login">
+            <Login verifiedUser={verifiedUser} />
+          </Route>
+          <Route path="/signup">
+            <h1>Signup</h1>
+          </Route>
+          <Route path="/user">
+            {login ? <User /> : <Redirect to="/login" />}
           </Route>
         </Switch>
       </Router>
