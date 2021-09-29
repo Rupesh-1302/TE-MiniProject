@@ -1,4 +1,3 @@
-import "./App.css";
 import React, { useState } from "react";
 import {
   BrowserRouter as Router,
@@ -10,7 +9,7 @@ import Login from "./Components/Login";
 import User from "./Components/User";
 
 function App() {
-  const [login, setLogin] = useState(false);
+  const [login, setLogin] = useState(true);
   function verifiedUser(verification) {
     setLogin(verification);
   }

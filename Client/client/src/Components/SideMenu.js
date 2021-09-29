@@ -7,6 +7,7 @@ import chat from "../assets/chat.png";
 import tender from "../assets/tender.png";
 import auction from "../assets/auction.png";
 import { Link, useRouteMatch } from "react-router-dom";
+import "../stylesheets/sideNav.css";
 
 export const menuItems = [
   {
@@ -25,7 +26,11 @@ function SideMenu() {
   const [inactive, setInactive] = useState(false);
   const { url } = useRouteMatch();
   return (
-    <div className={`side-menu ${inactive ? "inactive" : ""} `}>
+    <div
+      className={`side-menu ${
+        inactive ? "inactive" : ""
+      } bg-light navbar-light`}
+    >
       <div className="top-section">
         <div className="logo">
           <img src={logo} alt="sidebar-logo" />
@@ -46,15 +51,15 @@ function SideMenu() {
 
       <div className="main-menu">
         <ul>
-          <li>
-            <Link to={`${url}/home`} className="menu-item">
+          <li className="my-4">
+            <Link to={`${url}/home`} className="menu-item ">
               <div className="menu-icon">
                 <img src={home} title="Home" alt="Home-icon" />
               </div>
               <span> Home </span>
             </Link>
           </li>
-          <li>
+          <li className="my-4">
             <Link to={`${url}/explore`} className="menu-item">
               <div className="menu-icon">
                 <img src={explore} alt="Home-icon" />
@@ -63,7 +68,7 @@ function SideMenu() {
             </Link>
           </li>
 
-          <li>
+          <li className="my-4">
             <Link to={`${url}/chat`} className="menu-item">
               <div className="menu-icon">
                 <img src={chat} alt="Home-icon" />
@@ -71,7 +76,7 @@ function SideMenu() {
               <span>Chat</span>
             </Link>
           </li>
-          <li>
+          <li className="my-4">
             <Link to={`${url}/tender`} className="menu-item">
               <div className="menu-icon">
                 <img src={tender} alt="Home-icon" />
@@ -79,7 +84,7 @@ function SideMenu() {
               <span>Tender</span>
             </Link>
           </li>
-          <li>
+          <li className="my-4">
             <Link to={`${url}/auction`} className="menu-item">
               <div className="menu-icon">
                 <img src={auction} alt="Home-icon" />
