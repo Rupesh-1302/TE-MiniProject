@@ -9,14 +9,12 @@ import InputBase from "@mui/material/InputBase";
 import Badge from "@mui/material/Badge";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
-import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import AccountCircle from "@mui/icons-material/AccountCircle";
-import MailIcon from "@mui/icons-material/Mail";
-import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import { Container } from "@mui/material";
 import { Home, Chat, Explore, Gavel, Assignment } from "@mui/icons-material";
+import { useRouteMatch, useHistory } from "react-router-dom";
 
 const paraStyle = {
   marginTop: 0,
@@ -66,6 +64,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 export default function PrimarySearchAppBar() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+  const { url } = useRouteMatch();
+  const history = useHistory();
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -85,6 +85,10 @@ export default function PrimarySearchAppBar() {
 
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
+  };
+
+  const handleLinkClick = (name) => {
+    history.push(`${url}/${name}`);
   };
 
   const menuId = "primary-search-account-menu";
@@ -126,7 +130,11 @@ export default function PrimarySearchAppBar() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
+      <MenuItem
+        onClick={() => {
+          handleLinkClick("home");
+        }}
+      >
         <IconButton size="large" aria-label="show 4 new mails" color="inherit">
           <Badge badgeContent={null} color="error">
             <Home />
@@ -134,7 +142,11 @@ export default function PrimarySearchAppBar() {
         </IconButton>
         <p style={paraStyle}>Home</p>
       </MenuItem>
-      <MenuItem>
+      <MenuItem
+        onClick={() => {
+          handleLinkClick("chat");
+        }}
+      >
         <IconButton size="large" aria-label="show 4 new mails" color="inherit">
           <Badge badgeContent={null} color="error">
             <Chat />
@@ -142,7 +154,11 @@ export default function PrimarySearchAppBar() {
         </IconButton>
         <p style={paraStyle}>Chat</p>
       </MenuItem>
-      <MenuItem>
+      <MenuItem
+        onClick={() => {
+          handleLinkClick("explore");
+        }}
+      >
         <IconButton size="large" aria-label="show 4 new mails" color="inherit">
           <Badge badgeContent={null} color="error">
             <Explore />
@@ -150,7 +166,11 @@ export default function PrimarySearchAppBar() {
         </IconButton>
         <p style={paraStyle}>Explore</p>
       </MenuItem>
-      <MenuItem>
+      <MenuItem
+        onClick={() => {
+          handleLinkClick("auction");
+        }}
+      >
         <IconButton size="large" aria-label="show 4 new mails" color="inherit">
           <Badge badgeContent={null} color="error">
             <Gavel />
@@ -158,7 +178,11 @@ export default function PrimarySearchAppBar() {
         </IconButton>
         <p style={paraStyle}>Auction</p>
       </MenuItem>
-      <MenuItem>
+      <MenuItem
+        onClick={() => {
+          handleLinkClick("tender");
+        }}
+      >
         <IconButton
           size="large"
           aria-label="show 17 new notifications"
@@ -170,7 +194,11 @@ export default function PrimarySearchAppBar() {
         </IconButton>
         <p style={paraStyle}>Tender</p>
       </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
+      <MenuItem
+        onClick={() => {
+          handleLinkClick("profile");
+        }}
+      >
         <IconButton
           size="large"
           aria-label="account of current user"
@@ -187,18 +215,9 @@ export default function PrimarySearchAppBar() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+      <AppBar position="fixed">
         <Container maxWidth="xl">
           <Toolbar>
-            {/* <IconButton
-              size="large"
-              edge="start"
-              color="inherit"
-              aria-label="open drawer"
-              sx={{ mr: 2 }}
-            >
-              <MenuIcon />
-            </IconButton> */}
             <Typography
               variant="h6"
               noWrap
@@ -224,7 +243,11 @@ export default function PrimarySearchAppBar() {
                 color="inherit"
               >
                 <Badge badgeContent={null} color="error">
-                  <Home />
+                  <Home
+                    onClick={() => {
+                      handleLinkClick("home");
+                    }}
+                  />
                 </Badge>
               </IconButton>
               <IconButton
@@ -233,7 +256,11 @@ export default function PrimarySearchAppBar() {
                 color="inherit"
               >
                 <Badge badgeContent={null} color="error">
-                  <Chat />
+                  <Chat
+                    onClick={() => {
+                      handleLinkClick("chat");
+                    }}
+                  />
                 </Badge>
               </IconButton>
               <IconButton
@@ -242,7 +269,11 @@ export default function PrimarySearchAppBar() {
                 color="inherit"
               >
                 <Badge badgeContent={null} color="error">
-                  <Explore />
+                  <Explore
+                    onClick={() => {
+                      handleLinkClick("explore");
+                    }}
+                  />
                 </Badge>
               </IconButton>
               <IconButton
@@ -251,7 +282,11 @@ export default function PrimarySearchAppBar() {
                 color="inherit"
               >
                 <Badge badgeContent={null} color="error">
-                  <Gavel />
+                  <Gavel
+                    onClick={() => {
+                      handleLinkClick("auction");
+                    }}
+                  />
                 </Badge>
               </IconButton>
               <IconButton
@@ -260,7 +295,11 @@ export default function PrimarySearchAppBar() {
                 color="inherit"
               >
                 <Badge badgeContent={null} color="error">
-                  <Assignment />
+                  <Assignment
+                    onClick={() => {
+                      handleLinkClick("tender");
+                    }}
+                  />
                 </Badge>
               </IconButton>
               <IconButton
@@ -272,7 +311,11 @@ export default function PrimarySearchAppBar() {
                 onClick={handleProfileMenuOpen}
                 color="inherit"
               >
-                <AccountCircle />
+                <AccountCircle
+                  onClick={() => {
+                    handleLinkClick("profile");
+                  }}
+                />
               </IconButton>
             </Box>
             <Box sx={{ display: { xs: "flex", md: "none" } }}>
@@ -290,6 +333,7 @@ export default function PrimarySearchAppBar() {
           </Toolbar>
         </Container>
       </AppBar>
+      <Toolbar />
 
       {renderMobileMenu}
       {renderMenu}

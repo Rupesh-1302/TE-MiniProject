@@ -2,12 +2,14 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const commentSchema = new Schema({
-  userId: {
+  author: {
     type: Schema.Types.ObjectId,
+    ref: "User",
     required: true,
   },
   replyTo: {
     type: Schema.Types.ObjectId,
+    ref: "User",
     required: true,
   },
   message: {
@@ -20,4 +22,4 @@ const commentSchema = new Schema({
   },
 });
 
-module.exports = mongoose.model(Comment, commentSchema);
+module.exports = mongoose.model("Comment", commentSchema);

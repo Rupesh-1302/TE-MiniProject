@@ -5,16 +5,18 @@ const postsSchema = new Schema({
   product: {
     type: Boolean,
     require: true,
+    default: false,
   },
   title: {
     type: String,
+    require: true,
   },
-  postType: {
+  postMediaType: {
     type: String,
     default: "image",
     required: true,
   },
-  postUrl: String,
+  postMediaUrl: String,
   desc: {
     type: String,
   },
@@ -27,12 +29,14 @@ const postsSchema = new Schema({
   },
   comments: {
     type: [Schema.Types.ObjectId],
+    ref: "Comment",
   },
   price: {
     type: Number,
     default: 0,
     min: 0,
   },
+  timeOfPost: Date,
 });
 
-module.exports = mongoose.model(Post, postsSchema);
+module.exports = mongoose.model("Post", postsSchema);
