@@ -5,8 +5,9 @@ import {
   Route,
   Redirect,
 } from "react-router-dom";
-import Login from "./Components/Login";
 import User from "./Components/User";
+import Signin from "./Components/SignIn";
+import Signup from "./Components/Signup";
 
 function App() {
   const [login, setLogin] = useState(true);
@@ -21,10 +22,10 @@ function App() {
             <Redirect to="/user" />
           </Route>
           <Route path="/login">
-            <Login verifiedUser={verifiedUser} />
+            <Signin />
           </Route>
           <Route path="/signup">
-            <h1>Signup</h1>
+            <Signup />
           </Route>
           <Route path="/user">
             {login ? <User /> : <Redirect to="/login" />}

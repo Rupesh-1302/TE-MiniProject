@@ -1,14 +1,20 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
+const passportLocalMongoose = require("passport-local-mongoose");
 
 const userSchema = new Schema({
-  userName: {
+  firstName: {
+    type: String,
+    required: true,
+  },
+  lastName: {
     type: String,
     required: true,
   },
   email: {
     type: String,
     required: true,
+    unique: true,
   },
   userType: {
     type: String,
@@ -17,11 +23,13 @@ const userSchema = new Schema({
   },
   phoneNo: {
     type: Number,
+    unique: true,
   },
   following: {
     type: [
       {
         type: Schema.Types.ObjectId,
+        ref: "User",
       },
     ],
     require: true,
@@ -31,12 +39,13 @@ const userSchema = new Schema({
     type: [
       {
         type: Schema.Types.ObjectId,
+        ref: "User",
       },
     ],
     require: true,
     default: [],
   },
-  consumer: {
+  producer: {
     likesCounts: {
       type: Number,
       default: 0,
@@ -47,13 +56,38 @@ const userSchema = new Schema({
       default: 0,
       min: 0,
     },
+    address: {
+      type: String,
+    },
   },
-  posts: [Schema.Types.ObjectId],
-  unseenPosts: [Schema.Types.ObjectId],
-  privateAuctionList: [Schema.Types.ObjectId],
-  privateTenderList: [Schema.Types.ObjectId],
+  userPosts: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Post",
+    },
+  ],
+  unseenPosts: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Post",
+    },
+  ],
+  privateAuctionList: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Auction",
+    },
+  ],
+  privateTenderList: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Tender",
+    },
+  ],
 });
+
+userSchema.plugin(passportLocalMongoose);
 
 // address to add.
 
-module.exports = mongoose.model(User, userSchema);
+module.exports = mongoose.model("User", userSchema);
