@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../models/User");
+const passport = require("passport");
 
 router.post("/register", async (req, res) => {
   try {
@@ -35,6 +36,10 @@ router.post("/register", async (req, res) => {
       },
     });
   }
+});
+
+router.post("/login", passport.authenticate("local"), async (req, res) => {
+  res.json({ redirect: "/user/home" });
 });
 
 module.exports = router;

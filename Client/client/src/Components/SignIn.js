@@ -19,6 +19,8 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { signinSchema } from "../Schema";
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useHistory } from "react-router-dom";
+import axios from "axios";
 
 function Copyright(props) {
   return (
@@ -45,6 +47,7 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function SignInSide() {
+  const history = useHistory();
   const {
     handleSubmit,
     formState: { errors },
@@ -54,9 +57,16 @@ export default function SignInSide() {
     resolver: yupResolver(signinSchema),
   });
 
-  const onSubmit = (data) => {
-    console.log(data);
-    reset();
+  const onSubmit = async (data) => {
+    await axios
+      .post("http://localhost:8000/user/login", data)
+      .then((res) => {
+        history.push(res.data.redirect);
+      })
+      .catch((e) => {
+        reset();
+        console.log(e.message);
+      });
   };
   return (
     <ThemeProvider theme={theme}>
@@ -68,7 +78,7 @@ export default function SignInSide() {
           sm={4}
           md={7}
           sx={{
-            backgroundImage: "url(/images/login-vector.jpg)",
+            backgroundImage: "url(/images/5143312.jpg)",
             backgroundRepeat: "no-repeat",
             objectFit: "cover",
             backgroundColor: (t) =>
