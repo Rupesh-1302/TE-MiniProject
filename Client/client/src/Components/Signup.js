@@ -103,7 +103,7 @@ export default function SignUp() {
           sm={4}
           md={7}
           sx={{
-            backgroundImage: "url(/images/login-vector.jpg)",
+            backgroundImage: "url(/images/5143312.jpg)",
             backgroundRepeat: "no-repeat",
             objectFit: "cover",
             backgroundColor: (t) =>
@@ -330,7 +330,6 @@ export default function SignUp() {
                             value={val}
                             onChange={handleChangeVal}
                             style={{ display: "initial", margin: "0 5px" }}
-                            defaultType="consumer"
                           >
                             <FormControlLabel
                               value="consumer"
@@ -388,7 +387,7 @@ export default function SignUp() {
                   </MaterialUILink>
                 </Grid>
               </Grid>
-              <Copyright sx={{ mt: 5 }} />
+              <Copyright sx={{ mt: 5, mb: 4 }} />
             </Box>
           </Box>
         </Grid>
