@@ -70,9 +70,9 @@ export default function PrimarySearchAppBar() {
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
-  const handleProfileMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
+  // const handleProfileMenuOpen = (event) => {
+  //   setAnchorEl(event.currentTarget);
+  // };
 
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);
@@ -241,65 +241,60 @@ export default function PrimarySearchAppBar() {
                 size="large"
                 aria-label="show 4 new mails"
                 color="inherit"
+                onClick={() => {
+                  handleLinkClick("home");
+                }}
               >
                 <Badge badgeContent={null} color="error">
-                  <Home
-                    onClick={() => {
-                      handleLinkClick("home");
-                    }}
-                  />
+                  <Home />
                 </Badge>
               </IconButton>
               <IconButton
                 size="large"
                 aria-label="show 4 new mails"
                 color="inherit"
+                onClick={() => {
+                  handleLinkClick("chat");
+                }}
               >
                 <Badge badgeContent={null} color="error">
-                  <Chat
-                    onClick={() => {
-                      handleLinkClick("chat");
-                    }}
-                  />
+                  <Chat />
                 </Badge>
               </IconButton>
               <IconButton
                 size="large"
                 aria-label="show 4 new mails"
                 color="inherit"
+                onClick={() => {
+                  handleLinkClick("explore");
+                }}
               >
                 <Badge badgeContent={null} color="error">
-                  <Explore
-                    onClick={() => {
-                      handleLinkClick("explore");
-                    }}
-                  />
+                  <Explore />
                 </Badge>
               </IconButton>
               <IconButton
                 size="large"
                 aria-label="show 4 new mails"
                 color="inherit"
+                onClick={() => {
+                  handleLinkClick("auction");
+                }}
               >
                 <Badge badgeContent={null} color="error">
-                  <Gavel
-                    onClick={() => {
-                      handleLinkClick("auction");
-                    }}
-                  />
+                  <Gavel />
                 </Badge>
               </IconButton>
               <IconButton
                 size="large"
                 aria-label="show 17 new notifications"
                 color="inherit"
+                onClick={() => {
+                  handleLinkClick("tender");
+                }}
               >
                 <Badge badgeContent={null} color="error">
-                  <Assignment
-                    onClick={() => {
-                      handleLinkClick("tender");
-                    }}
-                  />
+                  <Assignment />
                 </Badge>
               </IconButton>
               <IconButton
@@ -308,14 +303,12 @@ export default function PrimarySearchAppBar() {
                 aria-label="account of current user"
                 aria-controls={menuId}
                 aria-haspopup="true"
-                onClick={handleProfileMenuOpen}
+                onClick={() => {
+                  handleLinkClick("profile");
+                }}
                 color="inherit"
               >
-                <AccountCircle
-                  onClick={() => {
-                    handleLinkClick("profile");
-                  }}
-                />
+                <AccountCircle />
               </IconButton>
             </Box>
             <Box sx={{ display: { xs: "flex", md: "none" } }}>

@@ -37,6 +37,10 @@ const postsSchema = new Schema({
     min: 0,
   },
   timeOfPost: Date,
+  author: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+  },
 });
 
 module.exports = mongoose.model("Post", postsSchema);
