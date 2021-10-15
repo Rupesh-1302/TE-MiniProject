@@ -11,17 +11,11 @@ const postsSchema = new Schema({
     type: String,
     require: true,
   },
-  postMediaType: {
-    type: String,
-    default: "image",
-    required: true,
-  },
-  postMediaUrl: String,
+  imageURL: String,
   desc: {
     type: String,
   },
   Tags: [String],
-  userTags: [String],
   likes: {
     type: Number,
     default: 0,
