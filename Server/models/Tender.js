@@ -20,6 +20,10 @@ const tenderSchema = new Schema({
   },
   Tags: [String],
   userTags: [String],
+  author: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+  },
 });
 //tenderList
 module.exports = mongoose.model("Tender", tenderSchema);

@@ -8,6 +8,7 @@ const postRoutes = require("./routes/postRoute");
 const userRoutes = require("./routes/userRoutes");
 const session = require("express-session");
 const User = require("./models/User");
+const ExpressError = require("./util/ExpressError");
 
 mongoose
   .connect("mongodb://localhost:27017/SocialMediaMarketplace", {
@@ -52,21 +53,18 @@ passport.deserializeUser(User.deserializeUser());
 app.use("/user", userRoutes);
 app.use("/posts", postRoutes);
 
-app.get("/home", (req, res) => {
-  res.send("Hello from server");
+app.all("*", (req, res, next) => {
+  next(new ExpressError("Page Not Found", 404));
 });
 
-app.post("/login", (req, res) => {
-  const { email, password } = req.body;
-  console.log(req);
-  console.log(email, password);
-  if (email == "rupeshagarwal955@gmail.com" && password == "Rupesh") {
-    console.log(email);
-    res.send(true);
-  } else {
-    console.log("fail");
-    res.send(false);
+app.use((err, req, res, next) => {
+  if (!err.message) err.message = "Something went wrong!";
+  if (!err.statusCode) {
+    err.statusCode = 500;
   }
+  res
+    .status(200)
+    .json({ message: err.message, statusCode: err.statusCode, error: true });
 });
 
 // ***********  server start  **********
