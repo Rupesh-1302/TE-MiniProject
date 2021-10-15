@@ -30,8 +30,8 @@ export const signinSchema = yup.object().shape({
 });
 
 export const postSchema = yup.object().shape({
-  title: yup.string(),
+  title: yup.string().required(),
   description: yup.string(),
-  image: yup.string(),
-  productAmount: yup.number().min(0).default(0),
+  image: yup.string().required(),
+  price: yup.number().min(0).default(0),
 });
