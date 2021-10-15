@@ -14,14 +14,18 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
 import { postSchema } from "../Schema";
 
+import { Stack, Chip } from "@mui/material";
+
 const style = {
   position: "absolute",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 400,
+  width: 600,
+  overflow: "auto",
+  borderRadius: "10px",
   bgcolor: "background.paper",
-  border: "2px solid #000",
+  // border: "2px solid #000",
   boxShadow: 24,
   p: 4,
 };
@@ -50,7 +54,7 @@ function ChildModal(props) {
   return (
     <React.Fragment>
       <Button onClick={handleOpen} sx={{ display: "block" }}>
-        Open Child Modal
+        Add Tags
       </Button>
       <Modal
         open={open}
@@ -86,7 +90,7 @@ export default function TransitionsModal() {
   const [hashTagList, setHashTagList] = React.useState(new Set());
   const AddHashTagList = (data) => {
     setHashTagList((prevHashTagList) => {
-      return new Set([...prevHashTagList, data]);
+      return new Set([...prevHashTagList, data.toLowerCase()]);
     });
   };
 
@@ -106,11 +110,24 @@ export default function TransitionsModal() {
   const onSubmit = async (data) => {
     console.log(data);
   };
+  const handleDelete = (tag) => () => {
+    console.log(tag);
+    const newHashTagList = [...hashTagList].filter(
+      (hashTag) => hashTag !== tag
+    );
+    setHashTagList(new Set(newHashTagList));
+  };
 
   const hashTags = [...hashTagList].map((hashTag) => {
-    return <li key={`${hashTag}`}>{hashTag}</li>;
+    return (
+      <Chip
+        label={`${hashTag}`}
+        onDelete={handleDelete(hashTag)}
+        key={`${hashTag}`}
+        sx={TextFieldStyling}
+      />
+    );
   });
-  console.log(hashTags);
   return (
     <>
       <Button onClick={handleOpen}>Open modal</Button>
@@ -153,11 +170,10 @@ export default function TransitionsModal() {
                       autoFocus
                       label="Title"
                       placeholder="Enter the Title"
-                      required
                       fullWidth
                       style={TextFieldStyling}
                       {...field}
-                      error={errors.title}
+                      error={Boolean(errors.title)}
                       helperText={errors.title ? errors.title.message : null}
                     />
                   );
@@ -174,11 +190,10 @@ export default function TransitionsModal() {
                       rows={4}
                       label="Description"
                       placeholder="Enter the Description"
-                      required
                       fullWidth
                       style={TextFieldStyling}
                       {...field}
-                      error={errors.description}
+                      error={Boolean(errors.description)}
                       helperText={
                         errors.description ? errors.description.message : null
                       }
@@ -193,12 +208,11 @@ export default function TransitionsModal() {
                   return (
                     <MUI.TextField
                       label="Image URL"
-                      required
                       fullWidth
                       placeholder="Enter the Image URL"
                       style={TextFieldStyling}
                       {...field}
-                      error={errors.image}
+                      error={Boolean(errors.image)}
                       helperText={errors.image ? errors.image.message : null}
                     />
                   );
@@ -222,7 +236,7 @@ export default function TransitionsModal() {
 
               {val === true && (
                 <Controller
-                  name="image"
+                  name="price"
                   control={control}
                   render={({ field }) => {
                     return (
@@ -231,7 +245,10 @@ export default function TransitionsModal() {
                         style={TextFieldStyling}
                         {...field}
                       >
-                        <MUI.InputLabel htmlFor="outlined-adornment-amount">
+                        <MUI.InputLabel
+                          htmlFor="outlined-adornment-amount"
+                          error={Boolean(errors.price)}
+                        >
                           Amount
                         </MUI.InputLabel>
                         <MUI.OutlinedInput
@@ -243,29 +260,34 @@ export default function TransitionsModal() {
                           }
                           label="Amount"
                           type="numeric"
-                          name="productAmount"
-                          error={errors.productAmount}
-                          helperText={
-                            errors.productAmount
-                              ? errors.productAmount.message
-                              : null
-                          }
+                          name="price"
+                          error={Boolean(errors.price)}
                         />
+                        {errors.price && (
+                          <MUI.FormHelperText error id="price-error">
+                            {errors.price.message}
+                          </MUI.FormHelperText>
+                        )}
                       </MUI.FormControl>
                     );
                   }}
                 />
               )}
 
-              <Controller
-                name="ChildModel"
-                control={control}
-                render={({ field }) => {
-                  return (
-                    <ChildModal AddHashTagList={AddHashTagList} {...field} />
-                  );
+              <Stack
+                direction="row"
+                spacing={1}
+                sx={{
+                  flexWrap: "wrap",
+                  height: "100px",
+                  overflowY: "auto",
+                  overflowX: "hidden",
                 }}
-              />
+              >
+                {hashTags}
+              </Stack>
+
+              <ChildModal AddHashTagList={AddHashTagList} />
 
               <Button
                 variant="contained"
@@ -275,13 +297,6 @@ export default function TransitionsModal() {
                 Post
               </Button>
             </form>
-            <Button
-              onClick={() => {
-                console.log(hashTagList);
-              }}
-            >
-              Print
-            </Button>
           </Box>
         </Fade>
       </Modal>
