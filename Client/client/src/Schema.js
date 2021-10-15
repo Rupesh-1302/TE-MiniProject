@@ -28,3 +28,11 @@ export const signinSchema = yup.object().shape({
     .max(15)
     .required("Password must be of min. 8 and max 15 letters"),
 });
+
+export const postSchema = yup.object().shape({
+  title: yup.string().required(),
+  description: yup.string().required(),
+  image: yup.string(),
+  productAmount: yup.number().typeError("only numbars are allowed")
+    .positive("Amount can't be a negative value"),
+});

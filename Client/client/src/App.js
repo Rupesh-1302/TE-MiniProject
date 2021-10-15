@@ -8,6 +8,8 @@ import {
 import User from "./Components/User";
 import Signin from "./Components/SignIn";
 import Signup from "./Components/Signup";
+import PostModal from "./Components/PostModal";
+
 
 function App() {
   const [login, setLogin] = useState(true);
@@ -23,12 +25,15 @@ function App() {
           </Route>
           <Route path="/login">
             <Signin />
+            
           </Route>
           <Route path="/signup">
-            <Signup />
+            {/* <Signup /> */}
+            <PostModal />
           </Route>
           <Route path="/user">
-            {login ? <User /> : <Redirect to="/login" />}
+            {login ? 
+            <User /> : <Redirect to="/login" />}
           </Route>
         </Switch>
       </Router>
