@@ -30,9 +30,17 @@ export const signinSchema = yup.object().shape({
 });
 
 export const postSchema = yup.object().shape({
+<<<<<<< HEAD
   title: yup.string().required(),
   description: yup.string().required(),
   image: yup.string(),
   productAmount: yup.number().typeError("only numbars are allowed")
     .positive("Amount can't be a negative value"),
 });
+=======
+  title: yup.string(),
+  description: yup.string(),
+  image: yup.string(),
+  productAmount: yup.number().min(0).default(0),
+});
+>>>>>>> ce8308b4b8035c2fa0cec588a1657329aef67b14

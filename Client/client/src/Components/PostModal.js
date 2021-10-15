@@ -29,12 +29,17 @@ const TextFieldStyling = { marginBottom: "10px" };
 
 function ChildModal(props) {
   const [open, setOpen] = React.useState(false);
+<<<<<<< HEAD
+=======
+  const [keyword, setKeyword] = React.useState("");
+>>>>>>> ce8308b4b8035c2fa0cec588a1657329aef67b14
   const handleOpen = () => {
     setOpen(true);
   };
   const handleClose = () => {
     setOpen(false);
   };
+<<<<<<< HEAD
   const {
     handleSubmit,
     formState: { errors },
@@ -52,11 +57,31 @@ function ChildModal(props) {
       <Button onClick={handleOpen}>Open Child Modal</Button>
       <Modal
         // hideBackdrop
+=======
+  const handleClick = async () => {
+    await props.AddHashTagList(keyword);
+    handleClose();
+  };
+
+  const handleChange = (e) => {
+    setKeyword(() => {
+      return e.target.value;
+    });
+  };
+
+  return (
+    <React.Fragment>
+      <Button onClick={handleOpen} sx={{ display: "block" }}>
+        Open Child Modal
+      </Button>
+      <Modal
+>>>>>>> ce8308b4b8035c2fa0cec588a1657329aef67b14
         open={open}
         onClose={handleClose}
         aria-labelledby="child-modal-title"
         aria-describedby="child-modal-description"
       >
+<<<<<<< HEAD
         <Box component="form" noValidate sx={{ ...style, width: 200 }} onSubmit={handleSubmit(onSubmit)}>
           <Controller
             name="title"
@@ -79,6 +104,21 @@ function ChildModal(props) {
             }}
           />
           <Button onClick={handleClose}>Add</Button>
+=======
+        <Box component="form" sx={{ ...style, width: 200 }}>
+          <MUI.TextField
+            autoFocus
+            label="keyword"
+            placeholder="Enter Hashtag"
+            required
+            fullWidth
+            style={TextFieldStyling}
+            onChange={handleChange}
+          />
+          <Button type="button" onClick={handleClick}>
+            Add
+          </Button>
+>>>>>>> ce8308b4b8035c2fa0cec588a1657329aef67b14
         </Box>
       </Modal>
     </React.Fragment>
@@ -91,16 +131,26 @@ export default function TransitionsModal() {
   const handleClose = () => setOpen(false);
 
   const [val, setVal] = React.useState(false);
+<<<<<<< HEAD
   const [hashTagList, setHashTagList] = React.useState([]);
   const AddHashTagList = (data) => {
     console.log(data);
     setHashTagList((prevHashTagList) => {
       return [...prevHashTagList, data];
+=======
+  const [hashTagList, setHashTagList] = React.useState(new Set());
+  const AddHashTagList = (data) => {
+    setHashTagList((prevHashTagList) => {
+      return new Set([...prevHashTagList, data]);
+>>>>>>> ce8308b4b8035c2fa0cec588a1657329aef67b14
     });
   };
 
   const handleChangeVal = (event) => {
+<<<<<<< HEAD
     console.log(event.target.value);
+=======
+>>>>>>> ce8308b4b8035c2fa0cec588a1657329aef67b14
     setVal((prevVal) => {
       return !prevVal;
     });
@@ -116,8 +166,18 @@ export default function TransitionsModal() {
   const onSubmit = async (data) => {
     console.log(data);
   };
+<<<<<<< HEAD
   return (
     <div>
+=======
+
+  const hashTags = [...hashTagList].map((hashTag) => {
+    return <li key={`${hashTag}`}>{hashTag}</li>;
+  });
+  console.log(hashTags);
+  return (
+    <>
+>>>>>>> ce8308b4b8035c2fa0cec588a1657329aef67b14
       <Button onClick={handleOpen}>Open modal</Button>
       <Modal
         aria-labelledby="transition-modal-title"
@@ -160,7 +220,10 @@ export default function TransitionsModal() {
                       placeholder="Enter the Title"
                       required
                       fullWidth
+<<<<<<< HEAD
                       // inputProps={{ inputMode: "numeric" }}
+=======
+>>>>>>> ce8308b4b8035c2fa0cec588a1657329aef67b14
                       style={TextFieldStyling}
                       {...field}
                       error={errors.title}
@@ -204,8 +267,13 @@ export default function TransitionsModal() {
                       placeholder="Enter the Image URL"
                       style={TextFieldStyling}
                       {...field}
+<<<<<<< HEAD
                       error={errors.title}
                       helperText={errors.title ? errors.title.message : null}
+=======
+                      error={errors.image}
+                      helperText={errors.image ? errors.image.message : null}
+>>>>>>> ce8308b4b8035c2fa0cec588a1657329aef67b14
                     />
                   );
                 }}
@@ -215,10 +283,18 @@ export default function TransitionsModal() {
                 control={control}
                 render={({ field }) => {
                   return (
+<<<<<<< HEAD
                     <FormGroup onChange={handleChangeVal} {...field}>
                       <FormControlLabel
                         control={<Checkbox value={val} />}
                         label="Product"
+=======
+                    <FormGroup onChange={handleChangeVal}>
+                      <FormControlLabel
+                        control={<Checkbox value={val} />}
+                        label="Product"
+                        {...field}
+>>>>>>> ce8308b4b8035c2fa0cec588a1657329aef67b14
                       />
                     </FormGroup>
                   );
@@ -263,6 +339,7 @@ export default function TransitionsModal() {
               )}
 
               <Controller
+<<<<<<< HEAD
                 name="image"
                 control={control}
                 render={({ field }) => {
@@ -271,6 +348,22 @@ export default function TransitionsModal() {
               />
 
               <Button variant="contained" style={{ textAlign: "right" }}>
+=======
+                name="ChildModel"
+                control={control}
+                render={({ field }) => {
+                  return (
+                    <ChildModal AddHashTagList={AddHashTagList} {...field} />
+                  );
+                }}
+              />
+
+              <Button
+                variant="contained"
+                style={{ textAlign: "right" }}
+                type="submit"
+              >
+>>>>>>> ce8308b4b8035c2fa0cec588a1657329aef67b14
                 Post
               </Button>
             </form>
@@ -284,6 +377,11 @@ export default function TransitionsModal() {
           </Box>
         </Fade>
       </Modal>
+<<<<<<< HEAD
     </div>
+=======
+      <ul>{hashTags}</ul>
+    </>
+>>>>>>> ce8308b4b8035c2fa0cec588a1657329aef67b14
   );
 }

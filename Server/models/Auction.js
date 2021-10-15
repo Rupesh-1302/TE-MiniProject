@@ -36,6 +36,10 @@ const auctionSchema = new Schema({
     type: String,
     requred: true,
   },
+  author: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+  },
 });
 
 module.exports = mongoose.model("Auction", auctionSchema);

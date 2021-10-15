@@ -8,8 +8,12 @@ import {
 import User from "./Components/User";
 import Signin from "./Components/SignIn";
 import Signup from "./Components/Signup";
+<<<<<<< HEAD
 import PostModal from "./Components/PostModal";
 
+=======
+import PostModel from "./Components/PostModal";
+>>>>>>> ce8308b4b8035c2fa0cec588a1657329aef67b14
 
 function App() {
   const [login, setLogin] = useState(true);
@@ -34,6 +38,9 @@ function App() {
           <Route path="/user">
             {login ? 
             <User /> : <Redirect to="/login" />}
+          </Route>
+          <Route path="/postModel">
+            <PostModel />
           </Route>
         </Switch>
       </Router>
