@@ -8,6 +8,7 @@ import {
 import User from "./Components/User";
 import Signin from "./Components/SignIn";
 import Signup from "./Components/Signup";
+import PostModel from "./Components/PostModal";
 
 function App() {
   const [login, setLogin] = useState(true);
@@ -29,6 +30,9 @@ function App() {
           </Route>
           <Route path="/user">
             {login ? <User /> : <Redirect to="/login" />}
+          </Route>
+          <Route path="/postModel">
+            <PostModel />
           </Route>
         </Switch>
       </Router>
