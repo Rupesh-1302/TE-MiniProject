@@ -6,12 +6,7 @@ const auctionSchema = new Schema({
     type: String,
     required: true,
   },
-  auctionMediaType: {
-    type: String,
-    default: "image",
-    required: true,
-  },
-  auctionMediaUrl: {
+  imageURL: {
     type: String,
     required: true,
   },
@@ -26,12 +21,11 @@ const auctionSchema = new Schema({
     required: true,
   },
   date: {
-    type: Date,
+    type: String,
     required: true,
   },
-  timeOfPost: Date,
+  timeOfPost: String,
   Tags: [String],
-  userTags: [String],
   desc: {
     type: String,
     requred: true,

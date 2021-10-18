@@ -12,7 +12,7 @@ import Menu from "@mui/material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import MoreIcon from "@mui/icons-material/MoreVert";
-import { Container } from "@mui/material";
+import { Container, Tooltip } from "@mui/material";
 import { Home, Chat, Explore, Gavel, Assignment } from "@mui/icons-material";
 import { useRouteMatch, useHistory } from "react-router-dom";
 
@@ -237,79 +237,91 @@ export default function PrimarySearchAppBar() {
             </Search>
             <Box sx={{ flexGrow: 1 }} />
             <Box sx={{ display: { xs: "none", md: "flex" } }}>
-              <IconButton
-                size="large"
-                aria-label="show 4 new mails"
-                color="inherit"
-                onClick={() => {
-                  handleLinkClick("home");
-                }}
-              >
-                <Badge badgeContent={null} color="error">
-                  <Home />
-                </Badge>
-              </IconButton>
-              <IconButton
-                size="large"
-                aria-label="show 4 new mails"
-                color="inherit"
-                onClick={() => {
-                  handleLinkClick("chat");
-                }}
-              >
-                <Badge badgeContent={null} color="error">
-                  <Chat />
-                </Badge>
-              </IconButton>
-              <IconButton
-                size="large"
-                aria-label="show 4 new mails"
-                color="inherit"
-                onClick={() => {
-                  handleLinkClick("explore");
-                }}
-              >
-                <Badge badgeContent={null} color="error">
-                  <Explore />
-                </Badge>
-              </IconButton>
-              <IconButton
-                size="large"
-                aria-label="show 4 new mails"
-                color="inherit"
-                onClick={() => {
-                  handleLinkClick("auction");
-                }}
-              >
-                <Badge badgeContent={null} color="error">
-                  <Gavel />
-                </Badge>
-              </IconButton>
-              <IconButton
-                size="large"
-                aria-label="show 17 new notifications"
-                color="inherit"
-                onClick={() => {
-                  handleLinkClick("tender");
-                }}
-              >
-                <Badge badgeContent={null} color="error">
-                  <Assignment />
-                </Badge>
-              </IconButton>
-              <IconButton
-                size="large"
-                edge="end"
-                aria-label="account of current user"
-                aria-controls={menuId}
-                aria-haspopup="true"
-                onClick={() => {
-                  handleLinkClick("profile");
-                }}
-                color="inherit"
-              >
-                <AccountCircle />
-              </IconButton>
+              <Tooltip title="Home" placement="bottom">
+                <IconButton
+                  size="large"
+                  aria-label="show 4 new mails"
+                  color="inherit"
+                  onClick={() => {
+                    handleLinkClick("home");
+                  }}
+                >
+                  <Badge badgeContent={null} color="error">
+                    <Home />
+                  </Badge>
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Chat" placement="bottom">
+                <IconButton
+                  size="large"
+                  aria-label="show 4 new mails"
+                  color="inherit"
+                  onClick={() => {
+                    handleLinkClick("chat");
+                  }}
+                >
+                  <Badge badgeContent={null} color="error">
+                    <Chat />
+                  </Badge>
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Explore" placement="bottom">
+                <IconButton
+                  size="large"
+                  aria-label="show 4 new mails"
+                  color="inherit"
+                  onClick={() => {
+                    handleLinkClick("explore");
+                  }}
+                >
+                  <Badge badgeContent={null} color="error">
+                    <Explore />
+                  </Badge>
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Auction" placement="bottom">
+                <IconButton
+                  size="large"
+                  aria-label="show 4 new mails"
+                  color="inherit"
+                  onClick={() => {
+                    handleLinkClick("auction");
+                  }}
+                >
+                  <Badge badgeContent={null} color="error">
+                    <Gavel />
+                  </Badge>
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Tender" placement="bottom">
+                <IconButton
+                  size="large"
+                  aria-label="show 17 new notifications"
+                  color="inherit"
+                  onClick={() => {
+                    handleLinkClick("tender");
+                  }}
+                >
+                  <Badge badgeContent={null} color="error">
+                    <Assignment />
+                  </Badge>
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Profile" placement="bottom">
+                <IconButton
+                  size="large"
+                  edge="end"
+                  aria-label="account of current user"
+                  aria-controls={menuId}
+                  aria-haspopup="true"
+                  onClick={() => {
+                    handleLinkClick("profile");
+                  }}
+                  color="inherit"
+                >
+                  <AccountCircle />
+                </IconButton>
+              </Tooltip>
             </Box>
             <Box sx={{ display: { xs: "flex", md: "none" } }}>
               <IconButton

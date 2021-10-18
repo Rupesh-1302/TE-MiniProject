@@ -6,17 +6,14 @@ import Fade from "@mui/material/Fade";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import * as MUI from "@mui/material";
-import Checkbox from "@mui/material/Checkbox";
-import FormGroup from "@mui/material/FormGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
-import { postSchema } from "../Schema";
-
+import { tenderPostSchema } from "../Schema";
 import { Stack, Chip } from "@mui/material";
-
-axios.defaults.withCredentials = true;
+// import LocalizationProvider from "@mui/lab/LocalizationProvider";
+// import DatePicker from "@mui/lab/DatePicker";
+// import TextField from "@mui/material/TextField";
 
 const style = {
   position: "absolute",
@@ -82,31 +79,17 @@ function ChildModal(props) {
   );
 }
 
-const TransitionsModal = React.forwardRef((props, ref) => {
+export default function TenderPostModal() {
   const [open, setOpen] = React.useState(false);
-  React.useImperativeHandle(ref, () => ({
-    handleOpen() {
-      setOpen(true);
-    },
-  }));
-  const handleClose = () => {
-    reset();
-    setVal(false);
-    setHashTagList(new Set());
-    setOpen(false);
-  };
-
-  const [val, setVal] = React.useState(false);
+  const [value, setValue] = React.useState(new Date());
   const [hashTagList, setHashTagList] = React.useState(new Set());
+
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   const AddHashTagList = (data) => {
     setHashTagList((prevHashTagList) => {
       return new Set([...prevHashTagList, data.toLowerCase()]);
-    });
-  };
-
-  const handleChangeVal = (event) => {
-    setVal((prevVal) => {
-      return !prevVal;
     });
   };
 
@@ -115,24 +98,10 @@ const TransitionsModal = React.forwardRef((props, ref) => {
     formState: { errors },
     control,
     reset,
-  } = useForm({ resolver: yupResolver(postSchema) });
+  } = useForm({ resolver: yupResolver(tenderPostSchema) });
 
   const onSubmit = async (data) => {
-    try {
-      data.hashTags = [...hashTagList];
-      const today = new Date();
-      data.timeOfPost = `${today.getHours()}:${today.getMinutes()}  ${today.getDate()}/${today.getMonth()}/${today.getFullYear()}`;
-      console.log(data.timeOfPost);
-      const res = await axios.post("http://localhost:8000/posts/new", data);
-      if (res.data.error) {
-        console.log(res.data.message);
-      } else {
-        console.log(res.data);
-        handleClose();
-      }
-    } catch (e) {
-      console.log(e);
-    }
+    console.log(data);
   };
   const handleDelete = (tag) => () => {
     console.log(tag);
@@ -148,11 +117,13 @@ const TransitionsModal = React.forwardRef((props, ref) => {
         label={`${hashTag}`}
         onDelete={handleDelete(hashTag)}
         key={`${hashTag}`}
+        sx={TextFieldStyling}
       />
     );
   });
   return (
     <>
+      <Button onClick={handleOpen}>Open modal</Button>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -178,8 +149,8 @@ const TransitionsModal = React.forwardRef((props, ref) => {
                   margin: "10px 0px",
                 }}
               >
-                Create a post
-                <Button onClick={handleClose}>X</Button>
+                Tender post
+                {/* <Button onClick={handleClose}>X</Button> */}
               </Typography>
             </div>
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -223,111 +194,96 @@ const TransitionsModal = React.forwardRef((props, ref) => {
                   );
                 }}
               />
+
               <Controller
-                name="image"
+                name="maxbid"
                 control={control}
                 render={({ field }) => {
                   return (
-                    <MUI.TextField
-                      label="Image URL"
+                    <MUI.FormControl
                       fullWidth
-                      placeholder="Enter the Image URL"
                       style={TextFieldStyling}
                       {...field}
-                      error={Boolean(errors.image)}
-                      helperText={errors.image ? errors.image.message : null}
-                    />
+                    >
+                      <MUI.InputLabel
+                        htmlFor="outlined-adornment-amount"
+                        error={Boolean(errors.maxbid)}
+                      >
+                        MaxBid
+                      </MUI.InputLabel>
+                      <MUI.OutlinedInput
+                        id="outlined-adornment-amount"
+                        startAdornment={
+                          <MUI.InputAdornment position="start">
+                            ₹
+                          </MUI.InputAdornment>
+                        }
+                        label="Max Bid"
+                        type="numeric"
+                        name="maxbid"
+                        error={Boolean(errors.maxbid)}
+                      />
+                      {errors.maxbid && (
+                        <MUI.FormHelperText error id="price-error">
+                          {errors.maxbid.message}
+                        </MUI.FormHelperText>
+                      )}
+                    </MUI.FormControl>
                   );
                 }}
               />
-              <Controller
-                name="product"
+              {/* <Controller
+                name="expiryDate"
                 control={control}
-                defaultValue={val}
                 render={({ field }) => {
                   return (
-                    <FormGroup onChange={handleChangeVal}>
-                      <FormControlLabel
-                        control={<Checkbox value={val} />}
-                        label="Product"
-                        {...field}
-                      />
-                    </FormGroup>
+                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                      <Stack spacing={3}>
+                        <DatePicker
+                          disableFuture
+                          label="Expiry Date"
+                          openTo="year"
+                          views={["year", "month", "day"]}
+                          {...field}
+                          value={value}
+                          onChange={(newValue) => {
+                            setValue(newValue);
+                          }}
+                          renderInput={(params) => <TextField {...params} />}
+                          error={Boolean(errors.expiryDate)}
+                          helperText={
+                            errors.expiryDate ? errors.expiryDate.message : null
+                          }
+                        />
+                      </Stack>
+                    </LocalizationProvider>
                   );
                 }}
-              />
+              /> */}
 
-              {val === true && (
-                <Controller
-                  name="price"
-                  control={control}
-                  render={({ field }) => {
-                    return (
-                      <MUI.FormControl
-                        fullWidth
-                        style={TextFieldStyling}
-                        {...field}
-                      >
-                        <MUI.InputLabel
-                          htmlFor="outlined-adornment-amount"
-                          error={Boolean(errors.price)}
-                        >
-                          Amount
-                        </MUI.InputLabel>
-                        <MUI.OutlinedInput
-                          id="outlined-adornment-amount"
-                          startAdornment={
-                            <MUI.InputAdornment position="start">
-                              ₹
-                            </MUI.InputAdornment>
-                          }
-                          label="Amount"
-                          type="numeric"
-                          name="price"
-                          error={Boolean(errors.price)}
-                        />
-                        {errors.price && (
-                          <MUI.FormHelperText error id="price-error">
-                            {errors.price.message}
-                          </MUI.FormHelperText>
-                        )}
-                      </MUI.FormControl>
-                    );
-                  }}
-                />
-              )}
-
-              {Boolean(hashTagList) === true ? (
-                <Stack
-                  direction="row"
-                  spacing={1}
-                  sx={{
-                    flexWrap: "wrap",
-                    height: "100px",
-                    overflowY: "auto",
-                    overflowX: "hidden",
-                    gap: "7px",
-                  }}
-                >
-                  {hashTags}
-                </Stack>
-              ) : null}
+              <Stack
+                direction="row"
+                spacing={1}
+                sx={{
+                  flexWrap: "wrap",
+                  height: "50px",
+                  overflowY: "auto",
+                  overflowX: "hidden",
+                }}
+              >
+                {hashTags}
+              </Stack>
 
               <ChildModal AddHashTagList={AddHashTagList} />
 
-              <Button
-                variant="contained"
-                style={{ textAlign: "right" }}
-                type="submit"
-              >
+              <Button variant="contained" type="submit">
                 Post
               </Button>
             </form>
           </Box>
         </Fade>
       </Modal>
+      <ul>{hashTags}</ul>
     </>
   );
-});
-
-export default TransitionsModal;
+}

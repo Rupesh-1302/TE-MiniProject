@@ -30,7 +30,7 @@ const postsSchema = new Schema({
     default: 0,
     min: 0,
   },
-  timeOfPost: Date,
+  timeOfPost: String,
   author: {
     type: Schema.Types.ObjectId,
     ref: "User",

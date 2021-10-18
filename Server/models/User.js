@@ -84,6 +84,10 @@ const userSchema = new Schema({
       ref: "Tender",
     },
   ],
+  profileImage: {
+    type: String,
+    default: null,
+  },
 });
 
 userSchema.plugin(passportLocalMongoose);

@@ -6,17 +6,15 @@ import Fade from "@mui/material/Fade";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import * as MUI from "@mui/material";
-import Checkbox from "@mui/material/Checkbox";
-import FormGroup from "@mui/material/FormGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
-import { postSchema } from "../Schema";
-
+import { auctionPostSchema, postSchema } from "../Schema";
+import TextField from "@mui/material/TextField";
+// import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import { Stack, Chip } from "@mui/material";
-
-axios.defaults.withCredentials = true;
+// import DatePicker from "@mui/lab/DatePicker";
+// import LocalizationProvider from "@mui/lab/LocalizationProvider";
 
 const style = {
   position: "absolute",
@@ -82,31 +80,26 @@ function ChildModal(props) {
   );
 }
 
-const TransitionsModal = React.forwardRef((props, ref) => {
+const AuctionPostModal = React.forwardRef((props, ref) => {
   const [open, setOpen] = React.useState(false);
+  // const [value, setValue] = React.useState(new Date());
+  const [hashTagList, setHashTagList] = React.useState(new Set());
+
   React.useImperativeHandle(ref, () => ({
     handleOpen() {
       setOpen(true);
     },
   }));
   const handleClose = () => {
-    reset();
-    setVal(false);
+    setOpen(false);
+    // setValue(false);
     setHashTagList(new Set());
     setOpen(false);
   };
 
-  const [val, setVal] = React.useState(false);
-  const [hashTagList, setHashTagList] = React.useState(new Set());
   const AddHashTagList = (data) => {
     setHashTagList((prevHashTagList) => {
       return new Set([...prevHashTagList, data.toLowerCase()]);
-    });
-  };
-
-  const handleChangeVal = (event) => {
-    setVal((prevVal) => {
-      return !prevVal;
     });
   };
 
@@ -115,23 +108,25 @@ const TransitionsModal = React.forwardRef((props, ref) => {
     formState: { errors },
     control,
     reset,
-  } = useForm({ resolver: yupResolver(postSchema) });
+  } = useForm({ resolver: yupResolver(auctionPostSchema) });
 
   const onSubmit = async (data) => {
     try {
       data.hashTags = [...hashTagList];
       const today = new Date();
       data.timeOfPost = `${today.getHours()}:${today.getMinutes()}  ${today.getDate()}/${today.getMonth()}/${today.getFullYear()}`;
-      console.log(data.timeOfPost);
-      const res = await axios.post("http://localhost:8000/posts/new", data);
+      data.date = ` ${
+        today.getDate() + 10
+      }/${today.getMonth()}/${today.getFullYear()}`;
+      const res = await axios.post("http://localhost:8000/auctions/new", data);
       if (res.data.error) {
-        console.log(res.data.message);
+        throw new Error(res.data.message);
       } else {
         console.log(res.data);
         handleClose();
       }
     } catch (e) {
-      console.log(e);
+      console.log(e.message);
     }
   };
   const handleDelete = (tag) => () => {
@@ -148,6 +143,7 @@ const TransitionsModal = React.forwardRef((props, ref) => {
         label={`${hashTag}`}
         onDelete={handleDelete(hashTag)}
         key={`${hashTag}`}
+        sx={TextFieldStyling}
       />
     );
   });
@@ -178,7 +174,7 @@ const TransitionsModal = React.forwardRef((props, ref) => {
                   margin: "10px 0px",
                 }}
               >
-                Create a post
+                Auction post
                 <Button onClick={handleClose}>X</Button>
               </Typography>
             </div>
@@ -240,94 +236,115 @@ const TransitionsModal = React.forwardRef((props, ref) => {
                   );
                 }}
               />
+
               <Controller
-                name="product"
+                name="basePrice"
                 control={control}
-                defaultValue={val}
                 render={({ field }) => {
                   return (
-                    <FormGroup onChange={handleChangeVal}>
-                      <FormControlLabel
-                        control={<Checkbox value={val} />}
-                        label="Product"
-                        {...field}
+                    <MUI.FormControl
+                      fullWidth
+                      style={TextFieldStyling}
+                      {...field}
+                    >
+                      <MUI.InputLabel
+                        htmlFor="outlined-adornment-amount"
+                        error={Boolean(errors.basePrice)}
+                      >
+                        Base price
+                      </MUI.InputLabel>
+                      <MUI.OutlinedInput
+                        id="outlined-adornment-amount"
+                        startAdornment={
+                          <MUI.InputAdornment position="start">
+                            ₹
+                          </MUI.InputAdornment>
+                        }
+                        label="Base price"
+                        type="numeric"
+                        name="basePrice"
+                        error={Boolean(errors.basePrice)}
                       />
-                    </FormGroup>
+                      {errors.basePrice && (
+                        <MUI.FormHelperText error id="price-error">
+                          {errors.basePrice.message}
+                        </MUI.FormHelperText>
+                      )}
+                    </MUI.FormControl>
+                  );
+                }}
+              />
+              {/* <Controller
+                name="date"
+                control={control}
+                render={({ field }) => {
+                  return (
+                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                      <Stack spacing={3}>
+                        <DatePicker
+                          disableFuture
+                          label="Responsive"
+                          openTo="year"
+                          views={["year", "month", "day"]}
+                          {...field}
+                          value={value}
+                          onChange={(newValue) => {
+                            setValue(newValue);
+                          }}
+                          renderInput={(params) => <TextField {...params} />}
+                          error={Boolean(errors.date)}
+                          helperText={errors.date ? errors.date.message : null}
+                        />
+                      </Stack>
+                    </LocalizationProvider>
+                  );
+                }}
+              /> */}
+
+              <Controller
+                name="venue"
+                control={control}
+                render={({ field }) => {
+                  return (
+                    <MUI.TextField
+                      autoFocus
+                      label="Venue"
+                      placeholder="Enter the venue"
+                      fullWidth
+                      style={TextFieldStyling}
+                      {...field}
+                      error={Boolean(errors.venue)}
+                      helperText={errors.venue ? errors.venue.message : null}
+                    />
                   );
                 }}
               />
 
-              {val === true && (
-                <Controller
-                  name="price"
-                  control={control}
-                  render={({ field }) => {
-                    return (
-                      <MUI.FormControl
-                        fullWidth
-                        style={TextFieldStyling}
-                        {...field}
-                      >
-                        <MUI.InputLabel
-                          htmlFor="outlined-adornment-amount"
-                          error={Boolean(errors.price)}
-                        >
-                          Amount
-                        </MUI.InputLabel>
-                        <MUI.OutlinedInput
-                          id="outlined-adornment-amount"
-                          startAdornment={
-                            <MUI.InputAdornment position="start">
-                              ₹
-                            </MUI.InputAdornment>
-                          }
-                          label="Amount"
-                          type="numeric"
-                          name="price"
-                          error={Boolean(errors.price)}
-                        />
-                        {errors.price && (
-                          <MUI.FormHelperText error id="price-error">
-                            {errors.price.message}
-                          </MUI.FormHelperText>
-                        )}
-                      </MUI.FormControl>
-                    );
-                  }}
-                />
-              )}
-
-              {Boolean(hashTagList) === true ? (
-                <Stack
-                  direction="row"
-                  spacing={1}
-                  sx={{
-                    flexWrap: "wrap",
-                    height: "100px",
-                    overflowY: "auto",
-                    overflowX: "hidden",
-                    gap: "7px",
-                  }}
-                >
-                  {hashTags}
-                </Stack>
-              ) : null}
+              <Stack
+                direction="row"
+                spacing={1}
+                sx={{
+                  flexWrap: "wrap",
+                  height: "50px",
+                  overflowY: "auto",
+                  overflowX: "hidden",
+                }}
+              >
+                {hashTags}
+              </Stack>
 
               <ChildModal AddHashTagList={AddHashTagList} />
 
-              <Button
-                variant="contained"
-                style={{ textAlign: "right" }}
-                type="submit"
-              >
+              <Button variant="contained" type="submit">
                 Post
               </Button>
             </form>
           </Box>
         </Fade>
       </Modal>
+      <ul>{hashTags}</ul>
     </>
   );
 });
 
-export default TransitionsModal;
+export default AuctionPostModal;

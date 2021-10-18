@@ -1,48 +1,32 @@
-import React from "react";
+import React, { useRef } from "react";
 import TopNav from "./TopNav";
 import { Switch, useRouteMatch, Route } from "react-router-dom";
-import Home from "./Home";
-import Auction from "./Auction";
-import { Fab } from "@mui/material";
-import { Add as AddIcon } from "@mui/icons-material";
 import Profile from "./Profile";
 import Explore from "./Explore";
+import HomeRoute from "./HomeRoute";
+import AuctionRoute from "./AuctionRoute";
+import { makeStyles } from "@mui/styles";
+
+const useStyles = makeStyles({
+  mainContainer: {
+    backgroundColor: "#EEEEEE",
+  },
+});
 
 function User() {
   const { path } = useRouteMatch();
+  const classes = useStyles();
+
   return (
-    <div>
+    <div className={classes.mainContainer}>
       <TopNav />
       <Switch>
+        {/* <ProtectedRoute path={`${path}/home`} component={HomeRoute} /> */}
         <Route path={`${path}/home`}>
-          <Home />
-          <Fab
-            color="secondary"
-            variant="extended"
-            sx={{
-              position: "fixed",
-              bottom: "100px",
-              right: "200px",
-            }}
-          >
-            <AddIcon sx={{ mr: 1 }} />
-            NEW POST
-          </Fab>
+          <HomeRoute />
         </Route>
         <Route path={`${path}/auction`}>
-          <Auction />
-          <Fab
-            color="secondary"
-            variant="extended"
-            sx={{
-              position: "fixed",
-              bottom: "100px",
-              right: "200px",
-            }}
-          >
-            <AddIcon sx={{ mr: 1 }} />
-            NEW Auction
-          </Fab>
+          <AuctionRoute />
         </Route>
         <Route path={`${path}/profile`}>
           <Profile />

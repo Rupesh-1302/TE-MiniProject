@@ -4,8 +4,9 @@ const mongoose = require("mongoose");
 const app = express();
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
-const postRoutes = require("./routes/postRoute");
+const postRoutes = require("./routes/postRoutes");
 const userRoutes = require("./routes/userRoutes");
+const auctionRoutes = require("./routes/auctionRoutes");
 const session = require("express-session");
 const User = require("./models/User");
 const ExpressError = require("./util/ExpressError");
@@ -26,11 +27,13 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(
   cors({
-    origin: "*",
+    origin: "http://localhost:3000",
     methods: ["GET", "PUT", "POST", "DELETE", "PATCH"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+    allowedHeaders: ["Content-Type", "Authorization", "withCredentials"],
+    credentials: true,
   })
 );
+
 const sessionConfig = {
   secret: "thiscouldbeabettersecret",
   resave: false,
@@ -50,11 +53,19 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 // *******  routes  *********
+// app.use((req, res, next) => {
+//   console.log(req.sessionID);
+//   if (req.user) {
+//     console.log(req.user);
+//   }
+//   next();
+// });
 app.use("/user", userRoutes);
 app.use("/posts", postRoutes);
+app.use("/auctions", auctionRoutes);
 
 app.all("*", (req, res, next) => {
-  next(new ExpressError("Page Not Found", 404));
+  next(new ExpressError("Page Not Found", 404, null));
 });
 
 app.use((err, req, res, next) => {
@@ -62,9 +73,15 @@ app.use((err, req, res, next) => {
   if (!err.statusCode) {
     err.statusCode = 500;
   }
-  res
-    .status(200)
-    .json({ message: err.message, statusCode: err.statusCode, error: true });
+  if (!err.redirect) {
+    err.redirect = null;
+  }
+  res.status(200).json({
+    message: err.message,
+    statusCode: err.statusCode,
+    error: true,
+    redirect: err.redirect,
+  });
 });
 
 // ***********  server start  **********

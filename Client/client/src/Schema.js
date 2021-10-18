@@ -32,6 +32,21 @@ export const signinSchema = yup.object().shape({
 export const postSchema = yup.object().shape({
   title: yup.string().required(),
   description: yup.string(),
-  image: yup.string().required(),
+  image: yup.string().required().default("https://source.unsplash.com/random"),
   price: yup.number().min(0).default(0),
+});
+
+export const auctionPostSchema = yup.object().shape({
+  title: yup.string().required(),
+  description: yup.string().required(),
+  image: yup.string().required().default("https://source.unsplash.com/random"),
+  basePrice: yup.number().min(0).required("A product should have a base price"),
+  venue: yup.string().required("Venue is required"),
+  date: yup.date(),
+});
+export const tenderPostSchema = yup.object().shape({
+  title: yup.string().required(),
+  description: yup.string(),
+  maxbid: yup.number().required(),
+  expiryDate: yup.date().required(),
 });

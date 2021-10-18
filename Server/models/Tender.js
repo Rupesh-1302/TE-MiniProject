@@ -19,7 +19,6 @@ const tenderSchema = new Schema({
     required: true,
   },
   Tags: [String],
-  userTags: [String],
   author: {
     type: Schema.Types.ObjectId,
     ref: "User",

@@ -90,10 +90,9 @@ export default function SignUp() {
     try {
       const res = await axios.post("http://localhost:8000/user/register", data);
       if (res.data.error) {
-        console.log(res.data);
         handleOpen(res.data);
       } else {
-        console.log(res.data.user);
+        history.push(res.data.redirect);
       }
     } catch (e) {
       console.log(e);

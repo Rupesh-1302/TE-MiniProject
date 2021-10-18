@@ -23,6 +23,7 @@ import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
+import auth from "../auth";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -48,7 +49,7 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-export default function SignInSide() {
+export default function SignInSide(props) {
   const history = useHistory();
   const [error, setError] = React.useState(null);
   const [open, setOpen] = React.useState(false);
@@ -79,9 +80,14 @@ export default function SignInSide() {
     try {
       const res = await axios.post("http://localhost:8000/user/login", data);
       if (!res.data.error) {
-        history.push(res.data.redirect);
+        auth.login(res.data.user, () => {
+          history.push("/user/home");
+        });
       } else {
         handleOpen(res.data);
+        auth.logout(() => {
+          history.push("/login");
+        });
       }
     } catch (e) {
       console.log(e);

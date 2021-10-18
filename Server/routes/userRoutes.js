@@ -3,11 +3,16 @@ const router = express.Router();
 const User = require("../models/User");
 const passport = require("passport");
 const ExpressError = require("../util/ExpressError");
+const { isLoggedIn } = require("../middlewares");
 
 router.get("/AuthErr", (req, res, next) => {
   next(
     new ExpressError("Password or Username incorrect please try again", 401)
   );
+});
+
+router.get("/isLoggedIn", isLoggedIn, (req, res) => {
+  res.json({ user: req.user });
 });
 
 router.post("/register", async (req, res, next) => {
@@ -33,7 +38,7 @@ router.post("/register", async (req, res, next) => {
     });
     const newUser = await User.register(user, password);
     res.json({
-      user: newUser,
+      redirect: "/user/home",
     });
   } catch (e) {
     if (
@@ -49,7 +54,7 @@ router.post(
   "/login",
   passport.authenticate("local", { failureRedirect: "/user/AuthErr" }),
   async (req, res) => {
-    res.json({ redirect: "/user/home" });
+    res.json({ user: req.user, redirect: "/user/home" });
   }
 );
 
