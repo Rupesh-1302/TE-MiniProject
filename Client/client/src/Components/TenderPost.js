@@ -15,7 +15,6 @@ import BookmarkIcon from "@mui/icons-material/Bookmark";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { makeStyles } from "@mui/styles";
-import foodImage from "../assets/slashio-photography-plwBDw9x5cE-unsplash.jpg";
 import { Menu, MenuItem } from "@mui/material";
 
 const useStyles = makeStyles({
@@ -35,7 +34,7 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-export default function AuctionPost({ auction }) {
+export default function TenderPost({ tender }) {
   const [expanded, setExpanded] = React.useState(false);
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -54,15 +53,15 @@ export default function AuctionPost({ auction }) {
       <CardHeader
         disableTypography={true}
         avatar={
-          auction.author.profileImage ? (
+          tender.author.profileImage ? (
             <Avatar
               sx={{ bgcolor: red[500] }}
               aria-label="user profile pic"
-              src={auction.author.profileImage}
+              src={tender.author.profileImage}
             ></Avatar>
           ) : (
             <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-              {auction.author.firstName[0].toUpperCase()}
+              {tender.author.firstName[0].toUpperCase()}
             </Avatar>
           )
         }
@@ -84,28 +83,21 @@ export default function AuctionPost({ auction }) {
         }
         title={
           <Typography varient="h4" className={classes.Heading}>
-            {auction.author.username}
+            {tender.author.username}
           </Typography>
         }
         subheader={
-          <Typography variant="subtitle1">{auction.timeOfPost}</Typography>
+          <Typography varient="subtitle1">{tender.timeOfPost}</Typography>
         }
-      />
-      <CardMedia
-        component="img"
-        height="500"
-        image={auction.imageURL}
-        alt="Paella dish"
       />
       <CardContent>
         <Typography variant="h6" className={classes.Heading}>
-          {auction.title.toUpperCase()}
+          {tender.title.toUpperCase()}
         </Typography>
         <Typography variant="body1" color="text.secondary">
-          <Typography variant="h6">Venue : {auction.venue}</Typography>
-          <Typography variant="h6">Date : {auction.date}</Typography>
+          <Typography variant="h6">Max-Bid : {tender.maxBid}</Typography>
           <Typography variant="h6">
-            Base Price : {auction.basePrice}/- rs
+            Expire Date : {tender.expireDate}
           </Typography>
         </Typography>
       </CardContent>
@@ -128,7 +120,7 @@ export default function AuctionPost({ auction }) {
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          <Typography paragraph>{auction.desc}</Typography>
+          <Typography paragraph>{tender.desc}</Typography>
         </CardContent>
       </Collapse>
     </Card>

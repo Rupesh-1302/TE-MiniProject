@@ -5,11 +5,14 @@ import Profile from "./Profile";
 import Explore from "./Explore";
 import HomeRoute from "./HomeRoute";
 import AuctionRoute from "./AuctionRoute";
+import TenderRoute from "./TenderRoute";
 import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles({
   mainContainer: {
     backgroundColor: "#EEEEEE",
+    minHeight: "100vh",
+    height: "100%",
   },
 });
 
@@ -33,6 +36,9 @@ function User() {
         </Route>
         <Route path={`${path}/explore`}>
           <Explore />
+        </Route>
+        <Route path={`${path}/tender`}>
+          <TenderRoute />
         </Route>
       </Switch>
     </div>

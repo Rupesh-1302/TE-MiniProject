@@ -17,6 +17,7 @@ import BookmarkIcon from "@mui/icons-material/Bookmark";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { makeStyles } from "@mui/styles";
+import { Stack, Chip } from "@mui/material";
 
 const useStyles = makeStyles({
   Heading: {
@@ -38,11 +39,20 @@ const ExpandMore = styled((props) => {
 export default function Post({ post }) {
   console.log(post);
   const [expanded, setExpanded] = React.useState(false);
+
   const classes = useStyles();
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
+
+  let hashTags = [];
+
+  if (post.Tags) {
+    hashTags = [...post.Tags].map((hashTag) => {
+      return <Chip label={`#${hashTag}`} key={`${hashTag}`} />;
+    });
+  }
 
   return (
     <Card sx={{ maxWidth: 600, width: 600, boxShadow: 3 }}>
@@ -82,7 +92,19 @@ export default function Post({ post }) {
         alt="Paella dish"
       />
       <CardContent>
-        <Typography variant="h6">{post.title.toUpperCase()}</Typography>
+        {Boolean(hashTags) === true ? (
+          <Stack direction="row" spacing={1} sx={{ marginBottom: "5px" }}>
+            {hashTags}
+          </Stack>
+        ) : null}
+        <Typography variant="h6" className={classes.Heading}>
+          {post.title.toUpperCase()}
+        </Typography>
+        {post.product ? (
+          <Typography variant="h6" color="text.secondary">
+            Price: {post.price}-/rs
+          </Typography>
+        ) : null}
       </CardContent>
       <CardActions disableSpacing>
         <IconButton aria-label="add to favorites">

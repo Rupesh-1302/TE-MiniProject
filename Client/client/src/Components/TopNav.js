@@ -61,7 +61,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function PrimarySearchAppBar() {
+function PrimarySearchAppBar() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const { url } = useRouteMatch();
@@ -345,3 +345,5 @@ export default function PrimarySearchAppBar() {
     </Box>
   );
 }
+
+export default PrimarySearchAppBar;

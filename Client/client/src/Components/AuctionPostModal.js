@@ -11,10 +11,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
 import { auctionPostSchema, postSchema } from "../Schema";
 import TextField from "@mui/material/TextField";
-// import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import { Stack, Chip } from "@mui/material";
-// import DatePicker from "@mui/lab/DatePicker";
-// import LocalizationProvider from "@mui/lab/LocalizationProvider";
 
 const style = {
   position: "absolute",
@@ -91,7 +88,7 @@ const AuctionPostModal = React.forwardRef((props, ref) => {
     },
   }));
   const handleClose = () => {
-    setOpen(false);
+    // setOpen(false);
     // setValue(false);
     setHashTagList(new Set());
     setOpen(false);
@@ -115,9 +112,8 @@ const AuctionPostModal = React.forwardRef((props, ref) => {
       data.hashTags = [...hashTagList];
       const today = new Date();
       data.timeOfPost = `${today.getHours()}:${today.getMinutes()}  ${today.getDate()}/${today.getMonth()}/${today.getFullYear()}`;
-      data.date = ` ${
-        today.getDate() + 10
-      }/${today.getMonth()}/${today.getFullYear()}`;
+      data.auctionDate = `${data.date.getDate()}-${data.date.getMonth()}-${data.date.getFullYear()}  ${data.date.getHours()}:${data.date.getMinutes()}`;
+      console.log(data.auctionDate);
       const res = await axios.post("http://localhost:8000/auctions/new", data);
       if (res.data.error) {
         throw new Error(res.data.message);
@@ -274,32 +270,25 @@ const AuctionPostModal = React.forwardRef((props, ref) => {
                   );
                 }}
               />
-              {/* <Controller
+              <Controller
                 name="date"
                 control={control}
                 render={({ field }) => {
                   return (
-                    <LocalizationProvider dateAdapter={AdapterDateFns}>
-                      <Stack spacing={3}>
-                        <DatePicker
-                          disableFuture
-                          label="Responsive"
-                          openTo="year"
-                          views={["year", "month", "day"]}
-                          {...field}
-                          value={value}
-                          onChange={(newValue) => {
-                            setValue(newValue);
-                          }}
-                          renderInput={(params) => <TextField {...params} />}
-                          error={Boolean(errors.date)}
-                          helperText={errors.date ? errors.date.message : null}
-                        />
-                      </Stack>
-                    </LocalizationProvider>
+                    <TextField
+                      id="datetime-local"
+                      label="Auction Date & Time"
+                      type="datetime-local"
+                      placeholder="dd-mm-yyyy hh:mm"
+                      sx={{ width: 250, marginY: "10px" }}
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      {...field}
+                    />
                   );
                 }}
-              /> */}
+              />
 
               <Controller
                 name="venue"
@@ -342,7 +331,6 @@ const AuctionPostModal = React.forwardRef((props, ref) => {
           </Box>
         </Fade>
       </Modal>
-      <ul>{hashTags}</ul>
     </>
   );
 });

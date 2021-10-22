@@ -30,23 +30,23 @@ export const signinSchema = yup.object().shape({
 });
 
 export const postSchema = yup.object().shape({
-  title: yup.string().required(),
-  description: yup.string(),
+  title: yup.string().required("Title is required"),
+  description: yup.string("Description is required"),
   image: yup.string().required().default("https://source.unsplash.com/random"),
   price: yup.number().min(0).default(0),
 });
 
 export const auctionPostSchema = yup.object().shape({
-  title: yup.string().required(),
-  description: yup.string().required(),
+  title: yup.string().required("Title is required"),
+  description: yup.string().required("Description is required"),
   image: yup.string().required().default("https://source.unsplash.com/random"),
   basePrice: yup.number().min(0).required("A product should have a base price"),
   venue: yup.string().required("Venue is required"),
   date: yup.date(),
 });
 export const tenderPostSchema = yup.object().shape({
-  title: yup.string().required(),
-  description: yup.string(),
-  maxbid: yup.number().required(),
-  expiryDate: yup.date().required(),
+  title: yup.string().required("Title is required"),
+  description: yup.string().required("Description is required"),
+  maxBid: yup.number().required("Max-Bid is required"),
+  expireDate: yup.date(),
 });

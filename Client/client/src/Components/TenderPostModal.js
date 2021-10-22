@@ -11,9 +11,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
 import { tenderPostSchema } from "../Schema";
 import { Stack, Chip } from "@mui/material";
-// import LocalizationProvider from "@mui/lab/LocalizationProvider";
-// import DatePicker from "@mui/lab/DatePicker";
-// import TextField from "@mui/material/TextField";
+import TextField from "@mui/material/TextField";
 
 const style = {
   position: "absolute",
@@ -79,13 +77,19 @@ function ChildModal(props) {
   );
 }
 
-export default function TenderPostModal() {
+const TenderPostModal = React.forwardRef((props, ref) => {
   const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState(new Date());
   const [hashTagList, setHashTagList] = React.useState(new Set());
 
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  React.useImperativeHandle(ref, () => ({
+    handleOpen() {
+      setOpen(true);
+    },
+  }));
+  const handleClose = () => {
+    setHashTagList(new Set());
+    setOpen(false);
+  };
 
   const AddHashTagList = (data) => {
     setHashTagList((prevHashTagList) => {
@@ -100,9 +104,11 @@ export default function TenderPostModal() {
     reset,
   } = useForm({ resolver: yupResolver(tenderPostSchema) });
 
-  const onSubmit = async (data) => {
+  const onSubmit = (data) => {
     console.log(data);
+    handleClose();
   };
+
   const handleDelete = (tag) => () => {
     console.log(tag);
     const newHashTagList = [...hashTagList].filter(
@@ -121,9 +127,9 @@ export default function TenderPostModal() {
       />
     );
   });
+
   return (
     <>
-      <Button onClick={handleOpen}>Open modal</Button>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -150,7 +156,7 @@ export default function TenderPostModal() {
                 }}
               >
                 Tender post
-                {/* <Button onClick={handleClose}>X</Button> */}
+                <Button onClick={handleClose}>X</Button>
               </Typography>
             </div>
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -196,7 +202,7 @@ export default function TenderPostModal() {
               />
 
               <Controller
-                name="maxbid"
+                name="maxBid"
                 control={control}
                 render={({ field }) => {
                   return (
@@ -232,34 +238,26 @@ export default function TenderPostModal() {
                   );
                 }}
               />
-              {/* <Controller
-                name="expiryDate"
+
+              <Controller
+                name="expireDate"
                 control={control}
                 render={({ field }) => {
                   return (
-                    <LocalizationProvider dateAdapter={AdapterDateFns}>
-                      <Stack spacing={3}>
-                        <DatePicker
-                          disableFuture
-                          label="Expiry Date"
-                          openTo="year"
-                          views={["year", "month", "day"]}
-                          {...field}
-                          value={value}
-                          onChange={(newValue) => {
-                            setValue(newValue);
-                          }}
-                          renderInput={(params) => <TextField {...params} />}
-                          error={Boolean(errors.expiryDate)}
-                          helperText={
-                            errors.expiryDate ? errors.expiryDate.message : null
-                          }
-                        />
-                      </Stack>
-                    </LocalizationProvider>
+                    <TextField
+                      id="datetime-local"
+                      label="Expire Date"
+                      type="datetime-local"
+                      placeholder="dd-mm-yyyy hh:mm"
+                      sx={{ width: 250 }}
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      {...field}
+                    />
                   );
                 }}
-              /> */}
+              />
 
               <Stack
                 direction="row"
@@ -283,7 +281,8 @@ export default function TenderPostModal() {
           </Box>
         </Fade>
       </Modal>
-      <ul>{hashTags}</ul>
     </>
   );
-}
+});
+
+export default TenderPostModal;

@@ -26,10 +26,10 @@ router.post(
       venue,
       hashTags,
       timeOfPost,
-      date,
+      auctionDate,
     } = req.body;
     const newAuction = new Auction({
-      date,
+      date: auctionDate,
       title,
       imageURL: image,
       desc: description,
