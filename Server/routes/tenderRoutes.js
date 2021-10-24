@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { isLoggedIn } = require("../middlewares");
-const Auction = require("../models/Auction");
+const Tender = require("../models/Tender");
 const User = require("../models/User");
 const catchAsync = require("../util/catchAsync");
 
@@ -9,8 +9,8 @@ router.get(
   "/",
   isLoggedIn,
   catchAsync(async (req, res) => {
-    const auctions = await Auction.find({}).populate("author");
-    res.json({ auctions });
+    const tenders = await Tender.find({}).populate("author");
+    res.json({ tenders });
   })
 );
 
@@ -18,30 +18,20 @@ router.post(
   "/new",
   isLoggedIn,
   catchAsync(async (req, res) => {
-    const {
-      basePrice,
-      image,
-      description,
+    const { maxBid, description, title, hashTags, timeOfPost, tenderDate } =
+      req.body;
+    const newTender = new Tender({
       title,
-      venue,
-      hashTags,
-      timeOfPost,
-      auctionDate,
-    } = req.body;
-    const newAuction = new Auction({
-      date: auctionDate,
-      title,
-      imageURL: image,
       desc: description,
       Tags: hashTags,
-      basePrice,
       author: req.user._id,
       timeOfPost,
-      venue,
+      maxBid,
+      expireDate: tenderDate,
     });
     const author = await User.findById(req.user._id);
-    await author.userAuction.unshift(newAuction);
-    await newAuction.save();
+    await author.userTender.unshift(newTender);
+    await newTender.save();
     await author.save();
     res.json(req.body);
   })

@@ -12,6 +12,7 @@ import axios from "axios";
 import { auctionPostSchema, postSchema } from "../Schema";
 import TextField from "@mui/material/TextField";
 import { Stack, Chip } from "@mui/material";
+import { Cancel } from "@mui/icons-material";
 
 const style = {
   position: "absolute",
@@ -171,7 +172,9 @@ const AuctionPostModal = React.forwardRef((props, ref) => {
                 }}
               >
                 Auction post
-                <Button onClick={handleClose}>X</Button>
+                <Button onClick={handleClose}>
+                  <Cancel />
+                </Button>
               </Typography>
             </div>
             <form onSubmit={handleSubmit(onSubmit)}>

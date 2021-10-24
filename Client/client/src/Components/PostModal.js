@@ -13,8 +13,8 @@ import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
 import { postSchema } from "../Schema";
-
 import { Stack, Chip } from "@mui/material";
+import { Cancel } from "@mui/icons-material";
 
 axios.defaults.withCredentials = true;
 
@@ -179,7 +179,9 @@ const TransitionsModal = React.forwardRef((props, ref) => {
                 }}
               >
                 Create a post
-                <Button onClick={handleClose}>X</Button>
+                <Button onClick={handleClose}>
+                  <Cancel />
+                </Button>
               </Typography>
             </div>
             <form onSubmit={handleSubmit(onSubmit)}>

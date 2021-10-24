@@ -7,6 +7,7 @@ const LocalStrategy = require("passport-local");
 const postRoutes = require("./routes/postRoutes");
 const userRoutes = require("./routes/userRoutes");
 const auctionRoutes = require("./routes/auctionRoutes");
+const tenderRoutes = require("./routes/tenderRoutes");
 const session = require("express-session");
 const User = require("./models/User");
 const ExpressError = require("./util/ExpressError");
@@ -63,6 +64,7 @@ passport.deserializeUser(User.deserializeUser());
 app.use("/user", userRoutes);
 app.use("/posts", postRoutes);
 app.use("/auctions", auctionRoutes);
+app.use("/tenders", tenderRoutes);
 
 app.all("*", (req, res, next) => {
   next(new ExpressError("Page Not Found", 404, null));

@@ -15,7 +15,7 @@ const tenderSchema = new Schema({
     min: 0,
   },
   expireDate: {
-    type: Date,
+    type: String,
     required: true,
   },
   Tags: [String],
@@ -23,6 +23,7 @@ const tenderSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "User",
   },
+  timeOfPost: String,
 });
 //tenderList
 module.exports = mongoose.model("Tender", tenderSchema);

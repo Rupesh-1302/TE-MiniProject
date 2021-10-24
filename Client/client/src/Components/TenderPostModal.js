@@ -12,6 +12,9 @@ import axios from "axios";
 import { tenderPostSchema } from "../Schema";
 import { Stack, Chip } from "@mui/material";
 import TextField from "@mui/material/TextField";
+import { Cancel } from "@mui/icons-material";
+
+axios.defaults.withCredentials = true;
 
 const style = {
   position: "absolute",
@@ -104,9 +107,23 @@ const TenderPostModal = React.forwardRef((props, ref) => {
     reset,
   } = useForm({ resolver: yupResolver(tenderPostSchema) });
 
-  const onSubmit = (data) => {
-    console.log(data);
-    handleClose();
+  const onSubmit = async (data) => {
+    try {
+      data.hashTags = [...hashTagList];
+      const today = new Date();
+      data.timeOfPost = `${today.getHours()}:${today.getMinutes()}  ${today.getDate()}/${today.getMonth()}/${today.getFullYear()}`;
+      data.tenderDate = `${data.expireDate.getDate()}-${data.expireDate.getMonth()}-${data.expireDate.getFullYear()}  ${data.expireDate.getHours()}:${data.expireDate.getMinutes()}`;
+      console.log(data);
+      const res = await axios.post("http://localhost:8000/tenders/new", data);
+      if (res.data.error) {
+        throw new Error(res.data.message);
+      } else {
+        console.log(res.data);
+        handleClose();
+      }
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   const handleDelete = (tag) => () => {
@@ -156,7 +173,9 @@ const TenderPostModal = React.forwardRef((props, ref) => {
                 }}
               >
                 Tender post
-                <Button onClick={handleClose}>X</Button>
+                <Button onClick={handleClose}>
+                  <Cancel />
+                </Button>
               </Typography>
             </div>
             <form onSubmit={handleSubmit(onSubmit)}>

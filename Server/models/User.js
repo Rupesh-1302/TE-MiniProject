@@ -66,6 +66,18 @@ const userSchema = new Schema({
       ref: "Post",
     },
   ],
+  userAuction: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Auction",
+    },
+  ],
+  userTender: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Tender",
+    },
+  ],
   unseenPosts: [
     {
       type: Schema.Types.ObjectId,

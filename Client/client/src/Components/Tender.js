@@ -16,16 +16,7 @@ const useStyles = makeStyles({
 function Tender() {
   const classes = useStyles();
 
-  const [tenderPosts, setTenderPosts] = useState([
-    {
-      title: "first tender",
-      maxBid: 20000,
-      desc: "bbjknsfnkmdnk",
-      expireDate: "22/3/5",
-      timeOfPost: "4:31 22/10/2021",
-      author: { username: "rupesh_agarwal", firstName: "Rupesh" },
-    },
-  ]);
+  const [tenderPosts, setTenderPosts] = useState(null);
   const handleTenderPostList = (postList) => {
     setTenderPosts((prevPosts) => {
       if (prevPosts) {
@@ -35,18 +26,18 @@ function Tender() {
       }
     });
   };
-  // useEffect(async () => {
-  //   try {
-  //     const res = await axios.get("http://localhost:8000/posts/");
-  //     if (!res.data.error) {
-  //       handleTenderPostList(res.data.posts);
-  //     } else {
-  //       throw new Error(res.data.message);
-  //     }
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-  // }, []);
+  useEffect(async () => {
+    try {
+      const res = await axios.get("http://localhost:8000/tenders/");
+      if (!res.data.error) {
+        handleTenderPostList(res.data.tenders);
+      } else {
+        throw new Error(res.data.message);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  }, []);
   let newTenderPostList = [];
   if (tenderPosts) {
     newTenderPostList = tenderPosts.map((tenderPost, key) => {
