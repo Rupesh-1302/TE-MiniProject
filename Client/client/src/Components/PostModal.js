@@ -16,8 +16,6 @@ import { postSchema } from "../Schema";
 import { Stack, Chip } from "@mui/material";
 import { Cancel } from "@mui/icons-material";
 
-axios.defaults.withCredentials = true;
-
 const style = {
   position: "absolute",
   top: "50%",
@@ -123,7 +121,9 @@ const TransitionsModal = React.forwardRef((props, ref) => {
       const today = new Date();
       data.timeOfPost = `${today.getHours()}:${today.getMinutes()}  ${today.getDate()}/${today.getMonth()}/${today.getFullYear()}`;
       console.log(data.timeOfPost);
-      const res = await axios.post("http://localhost:8000/posts/new", data);
+      const res = await axios.post("http://localhost:8000/posts/new", data, {
+        withCredentials: true,
+      });
       if (res.data.error) {
         console.log(res.data.message);
       } else {

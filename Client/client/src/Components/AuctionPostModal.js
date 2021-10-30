@@ -115,7 +115,9 @@ const AuctionPostModal = React.forwardRef((props, ref) => {
       data.timeOfPost = `${today.getHours()}:${today.getMinutes()}  ${today.getDate()}/${today.getMonth()}/${today.getFullYear()}`;
       data.auctionDate = `${data.date.getDate()}-${data.date.getMonth()}-${data.date.getFullYear()}  ${data.date.getHours()}:${data.date.getMinutes()}`;
       console.log(data.auctionDate);
-      const res = await axios.post("http://localhost:8000/auctions/new", data);
+      const res = await axios.post("http://localhost:8000/auctions/new", data, {
+        withCredentials: true,
+      });
       if (res.data.error) {
         throw new Error(res.data.message);
       } else {

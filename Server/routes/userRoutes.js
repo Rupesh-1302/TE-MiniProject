@@ -70,6 +70,7 @@ router.post(
   "/login",
   passport.authenticate("local", { failureRedirect: "/user/AuthErr" }),
   catchAsync(async (req, res) => {
+    console.log(req.user);
     res.json({ user: req.user, redirect: "/user/home" });
   })
 );

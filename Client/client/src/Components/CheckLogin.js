@@ -3,14 +3,14 @@ import auth from "../auth";
 import axios from "axios";
 import { useHistory, withRouter, useLocation } from "react-router-dom";
 
-axios.defaults.withCredentials = true;
-
 function CheckLogin() {
   let history = useHistory();
   let location = useLocation();
   useEffect(async () => {
     try {
-      const res = await axios.get("http://localhost:8000/user/isLoggedIn");
+      const res = await axios.get("http://localhost:8000/user/isLoggedIn", {
+        withCredentials: true,
+      });
       if (!res.data.error) {
         auth.login(res.data.user, () => {
           console.log("user call");

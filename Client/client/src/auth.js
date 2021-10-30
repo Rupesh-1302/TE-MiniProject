@@ -8,7 +8,6 @@ class Auth {
     console.log("isauthenticated");
     this.authenticated = true;
     this.user = user;
-    console.log(this.authenticated);
     return cb();
   }
 

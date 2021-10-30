@@ -7,7 +7,6 @@ import ProfileTenderList from "./ProfileTenderList";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import { GridOn, Gavel, Assignment } from "@mui/icons-material";
 import axios from "axios";
-
 axios.defaults.withCredentials = true;
 const useStyles = makeStyles({
   mainContainer: {
@@ -36,11 +35,14 @@ function Profile() {
 
   useEffect(async () => {
     try {
-      const res = await axios.get("http://localhost:8000/user/userProfile");
+      const res = await axios.get("http://localhost:8000/user/userProfile", {
+        withCredentials: true,
+      });
       if (res.data.error) {
         throw new Error(res.data.message);
       } else {
         console.log(res.data);
+        axios.defaults.withCredentials = false;
         handleUser(res.data.user);
       }
     } catch (e) {

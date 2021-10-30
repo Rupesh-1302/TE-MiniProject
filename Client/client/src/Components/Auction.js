@@ -3,9 +3,7 @@ import { Container, Grid } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import AuctionPost from "./AuctionPost";
 import axios from "axios";
-
 axios.defaults.withCredentials = true;
-
 const useStyles = makeStyles({
   mainContainer: {
     marginTop: "40px",
@@ -27,8 +25,11 @@ function Auction() {
   };
   useEffect(async () => {
     try {
-      const res = await axios.get("http://localhost:8000/auctions/");
+      const res = await axios.get("http://localhost:8000/auctions/", {
+        withCredentials: true,
+      });
       if (!res.data.error) {
+        axios.defaults.withCredentials = false;
         handleAuctionList(res.data.auctions);
       } else {
         throw new Error(res.data.message);

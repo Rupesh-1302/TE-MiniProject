@@ -9,12 +9,10 @@ import {
 import User from "./Components/User";
 import Signin from "./Components/SignIn";
 import Signup from "./Components/Signup";
-import axios from "axios";
-import ProtectedRoute from "./Components/ProtectedRoute";
-import auth from "./auth";
-import CheckLogin from "./Components/CheckLogin";
 
-axios.defaults.withCredentials = true;
+import ProtectedRoute from "./Components/ProtectedRoute";
+
+import CheckLogin from "./Components/CheckLogin";
 function App() {
   return (
     <>

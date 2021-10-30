@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import TopNav from "./TopNav";
 import { Switch, useRouteMatch, Route } from "react-router-dom";
 import Profile from "./Profile";
@@ -7,7 +7,7 @@ import HomeRoute from "./HomeRoute";
 import AuctionRoute from "./AuctionRoute";
 import TenderRoute from "./TenderRoute";
 import { makeStyles } from "@mui/styles";
-
+import Chat from "./Chat";
 const useStyles = makeStyles({
   mainContainer: {
     backgroundColor: "#EEEEEE",
@@ -16,7 +16,7 @@ const useStyles = makeStyles({
   },
 });
 
-function User() {
+function User(props) {
   const { path } = useRouteMatch();
   const classes = useStyles();
 
@@ -39,6 +39,9 @@ function User() {
         </Route>
         <Route path={`${path}/tender`}>
           <TenderRoute />
+        </Route>
+        <Route path={`${path}/chat`}>
+          <Chat username={props.user.username} />
         </Route>
       </Switch>
     </div>

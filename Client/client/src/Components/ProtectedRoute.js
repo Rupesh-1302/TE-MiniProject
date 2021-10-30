@@ -10,7 +10,7 @@ function ProtectedRoute({ component: Component, ...rest }) {
       render={(props) => {
         if (auth.isAutenticated()) {
           console.log(auth.isAutenticated(), "True part");
-          return <Component {...props} />;
+          return <Component {...props} user={auth.getUser()} />;
         } else {
           console.log("false part");
           return (

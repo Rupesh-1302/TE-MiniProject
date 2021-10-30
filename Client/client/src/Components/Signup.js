@@ -25,6 +25,7 @@ import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { FormHelperText } from "@mui/material";
 import { signupSchema } from "../Schema";
+import auth from "../auth"
 import {
   Link as MaterialUILink,
   Snackbar,
@@ -92,7 +93,7 @@ export default function SignUp() {
       if (res.data.error) {
         handleOpen(res.data);
       } else {
-        history.push(res.data.redirect);
+        history.push("/login");
       }
     } catch (e) {
       console.log(e);

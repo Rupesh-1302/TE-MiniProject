@@ -3,9 +3,7 @@ import { Container, Grid } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import Post from "./Post";
 import axios from "axios";
-
 axios.defaults.withCredentials = true;
-
 const useStyles = makeStyles({
   mainContainer: {
     marginTop: "40px",
@@ -28,8 +26,11 @@ function Home() {
   };
   useEffect(async () => {
     try {
-      const res = await axios.get("http://localhost:8000/posts/");
+      const res = await axios.get("http://localhost:8000/posts/", {
+        withCredentials: true,
+      });
       if (!res.data.error) {
+        axios.defaults.withCredentials = false;
         handlePostList(res.data.posts);
       } else {
         throw new Error(res.data.message);

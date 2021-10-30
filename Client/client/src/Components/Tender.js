@@ -3,9 +3,7 @@ import { Container, Grid } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import TenderPost from "./TenderPost";
 import axios from "axios";
-
 axios.defaults.withCredentials = true;
-
 const useStyles = makeStyles({
   mainContainer: {
     marginTop: "40px",
@@ -28,8 +26,11 @@ function Tender() {
   };
   useEffect(async () => {
     try {
-      const res = await axios.get("http://localhost:8000/tenders/");
+      const res = await axios.get("http://localhost:8000/tenders/", {
+        withCredentials: true,
+      });
       if (!res.data.error) {
+        axios.defaults.withCredentials = false;
         handleTenderPostList(res.data.tenders);
       } else {
         throw new Error(res.data.message);

@@ -14,8 +14,6 @@ import { Stack, Chip } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import { Cancel } from "@mui/icons-material";
 
-axios.defaults.withCredentials = true;
-
 const style = {
   position: "absolute",
   top: "50%",
@@ -114,7 +112,9 @@ const TenderPostModal = React.forwardRef((props, ref) => {
       data.timeOfPost = `${today.getHours()}:${today.getMinutes()}  ${today.getDate()}/${today.getMonth()}/${today.getFullYear()}`;
       data.tenderDate = `${data.expireDate.getDate()}-${data.expireDate.getMonth()}-${data.expireDate.getFullYear()}  ${data.expireDate.getHours()}:${data.expireDate.getMinutes()}`;
       console.log(data);
-      const res = await axios.post("http://localhost:8000/tenders/new", data);
+      const res = await axios.post("http://localhost:8000/tenders/new", data, {
+        withCredentials: true,
+      });
       if (res.data.error) {
         throw new Error(res.data.message);
       } else {
